@@ -10,7 +10,7 @@ import pandas
 import numpy as np
 #并行计算所需库
 from multiprocessing.dummy import Pool as ThreadPool
-#各文件路径
+
 spicepath = r'/rds/bear-apps/2019b/EL7-haswell/software/ngspice/31-foss-2019b/bin/ngspice'    #location of ngspice terminal on computer
 tem_targetpath='none'
 filename='circuit'
@@ -64,16 +64,16 @@ terminal_set = [None]*port_num
 for i in range(port_num):
   terminal_set[i]=i
 
-cross_rate =0.8#交叉率
+cross_rate =0.8
 pop_init_method = "grow"
 pop_size = 100
-mutation_rate =0.2#变异率
+mutation_rate =0.2
 
 mutation_methods = ["delete","add","another","change_value"]
 tournament_size =int(0.2*pop_size)
 value_cross_rate=0.2
 
-#CPU核
+
 core=1
 
 elitism = True
@@ -82,7 +82,7 @@ found_solution = False
 file_name_add=[]
 for i in range(0,pop_size):
     file_name_add.append(i)
-#根据属性结构，输出指令矩阵
+
 class Instruc:
     def __init__(self,label=None,port_num=0,port_list=[],other=[],value=[],index=0):
         self.label=label
@@ -99,9 +99,9 @@ def create_instruction(population:Tree):
     return Instruc_Set
 def create_instruction_recursively(parent:Node,Instruct_Set:list,function_dic:dict):
     if parent is not None:
-        #此处替换为器件名称
+
         if parent.type=='F':
-            ins = Instruc(None,0,[],[],[])#奇怪的问题，如果不初始化值，会叠加，奇怪啊奇怪
+            ins = Instruc(None,0,[],[],[])
             if parent.label=='R':
                 ins.label = 'R'
             elif parent.label=='C' or parent.label=='C_P':
@@ -206,7 +206,7 @@ def print_file(filename,instruction_set,index):
                          '+XTB=0 EG=1.11 XTI=3','+CJE=1.244e-11 VJE=0.7579','+MJE=0.3656 TF=4.908e-10','+XTF=9.51 VTF=2.927','+ITF=0.3131 PTF=0','+CJC=3.347e-12 VJC=0.5463','+MJC=0.391 XCJC=0.6193','+TR=9e-08 CJS=0 VJS=0.75','+MJS=0.333 FC=0.979',
                          '.MODEL BC856B PNP','+IS=2.014e-14 NF=0.9974','+ISE=6.578e-15 NE=1.45 BF=315.3','+IKF=0.079 VAF=39.15 NR=0.9952','+ISC=1.633e-14 NC=1.15 BR=8.68','+IKR=0.09 VAR=9.5 RB=10','+IRB=5e-06 RBM=5 RE=0.663','+RC=0.718 XTB=0 EG=1.11 XTI=3',
                          '+CJE=1.135e-11 VJE=0.7071','+MJE=0.3808 TF=6.546e-10','+XTF=5.387 VTF=6.245 ITF=0.2108','+PTF=0 CJC=6.395e-12 VJC=0.4951','+MJC=0.44 XCJC=0.6288 TR=5.5e-08','+CJS=0 VJS=0.75 MJS=0.333','+FC=0.9059',
-                         '*胚胎电路', '*****input***********', 'vc 1001 0 dc 5', 'rc 1001 2 1k',
+                         '*embryo', '*****input***********', 'vc 1001 0 dc 5', 'rc 1001 2 1k',
                          '********output**********************', 'rl 3 0 10k','vtemp 3 333 dc 0',
                          '*******generate circuit*****************']
 
@@ -220,7 +220,7 @@ def print_file(filename,instruction_set,index):
                 temp_str += instruction_set[j].other[k] + " "
             instruct_content.append(temp_str)
         other_content = ['.save time', '.save v(1)', '.save v(2)', '.save v(3)', '.save @vc[i]', '.save @vtemp[i]',
-                         '*控制输出', '.control',
+                         '*control output', '.control',
                          'run', 'op', 'dc vc 4 6 0.1 temp 0 100 25',
                          'write rawfile' + str(index) + '.raw', '.endc', '',
                          '.end']
@@ -250,26 +250,26 @@ def cal_fitness(spicepath,filename,targetpath,tem_targetpath,circuit_area,index)
         print("shape[0]<6")
         return  -99999999999999999,  -99999999999999999,  -99999999999999999,  -99999999999999999
     else:
-        #输入电压
+
         v_in=arrs[3]
-        #输入电流
+
         i_in=arrs[1]
-        #输出电压
+
         v_out=arrs[5]
-        # 输出电流
+
         i_out = arrs[2]
 
-        # 参考电流
+
         v_ref =np.load('ref.npy')
 
 
         if len(v_out)!=len(v_ref):
             return -99999999999999999,  -99999999999999999,  -99999999999999999,  -99999999999999999
-        ###功率计算##########
+
         deta_t = 1/ len(i_out)
-        # 输入总功率
+
         power_in = abs(np.sum(abs(v_in * i_in)) * deta_t)
-        # 输出总功率
+ 
         power_out = abs(np.sum(abs(v_out * i_out)) * deta_t)
 
 

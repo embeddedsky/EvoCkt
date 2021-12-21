@@ -10,7 +10,7 @@ import pandas
 import numpy as np
 #并行计算所需库
 from multiprocessing.dummy import Pool as ThreadPool
-#各文件路径
+
 spicepath = r'/rds/bear-apps/2019b/EL7-haswell/software/ngspice/31-foss-2019b/bin/ngspice'   #location of ngspice terminal on computer
 tem_targetpath='none.raw'
 filename='circuit'
@@ -22,7 +22,7 @@ ref_path='vout-t.xlsx'
 excel_file=pandas.read_excel(ref_path,sheet_name=[0])
 ref_matrix=excel_file[0].values.transpose()
 ref_v=ref_matrix[1]
-#程序参数
+
 depth_range = (4,7)
 max_depth=depth_range[1]
 port_num=20
@@ -50,12 +50,12 @@ Not_Set=[("Not",2,Not_Gate),("Not_p",2,Not_Gate)]
 C_Set=[("C",2,C_range),("C_P",2,C_range)]
 
 
-#单个mos类型
+
 P_Set=[("P_6_1",3,PMOS),("P_6_2",3,PMOS),("P_6_3",3,PMOS),("P_6_4",3,PMOS),("P_6_5",3,PMOS),("P_6_6",3,PMOS)]
 N_Set=[("N_6_1",3,NMOS),("N_6_2",3,NMOS),("N_6_3",3,NMOS),("N_6_4",3,NMOS),("N_6_5",3,NMOS),("N_6_6",3,NMOS)]
 
 M_Set=[("Mem", 2,MEMRISTOR),("Mem_P", 2,MEMRISTOR)]
-# 0:接地
+# 0:GND
 #1：VSS
 #2:-VSS
 #3:INPUT
@@ -64,10 +64,10 @@ terminal_set = [None]*port_num
 for i in range(port_num):
   terminal_set[i]=i
 
-cross_rate =0.6#交叉率
+cross_rate =0.6
 pop_init_method = "grow"
 pop_size = 100
-mutation_rate =0.2#变异率
+mutation_rate =0.2
 
 mutation_methods = ["delete","add","another","change_value"]
 tournament_size =20
@@ -80,7 +80,7 @@ found_solution = False
 file_name_add=[]
 for i in range(0,pop_size):
     file_name_add.append(i)
-#根据属性结构，输出指令矩阵
+
 class Instruc:
     def __init__(self,label=None,port_num=0,port_list=[],other=[],value=[],index=0):
         self.label=label
@@ -97,9 +97,8 @@ def create_instruction(population:Tree):
     return Instruc_Set
 def create_instruction_recursively(parent:Node,Instruct_Set:list,function_dic:dict):
     if parent is not None:
-        #此处替换为器件名称
         if parent.type=='F':
-            ins = Instruc(None,0,[],[],[])#奇怪的问题，如果不初始化值，会叠加，奇怪啊奇怪
+            ins = Instruc(None,0,[],[],[])
             if parent.label=='R':
                 ins.label = 'R'
             elif parent.label=='C' or parent.label=='C_P':
@@ -206,7 +205,7 @@ def print_file(filename,instruction_set,index):
         f.truncate()
 
         fixed_content = ['Memristor with threshold', '', '.param stime=10n', '',
-                         '* send parameters to the .control section', '', '.csparam stime={stime}', '', '*忆阻模型定义', '',
+                         '* send parameters to the .control section', '', '.csparam stime={stime}', '', '*memristor', '',
                          '.subckt memristor plus minus params: Ron=20k Roff=200k Rini=20k uv=\'10e-15/stime\' p=1,', '',
                          '.param D=10n f(x)={uv*Ron/D**2*(1-pow(2*x-1,2*p))} a={(Rini-Ron)/(Roff-Rini)}', '',
                          '*model of memristive port', 'Roff plus aux {Roff}', '',
@@ -234,11 +233,11 @@ def print_file(filename,instruction_set,index):
                          '*inverter**', '.subckt inverter in out', 'Vdd dd 0 6', 'Vss ss 0 -6.5',
                          'M1 out in dd dd p2 W=7.5u L=0.35u pd=13.5u ad=22.5p ps=13.5u as=22.5p',
                          'M2 out in ss ss n2 W=3u L=0.35u pd=9u ad=9p ps=9u as=9p',
-                          '.ends', '*胚胎电路', '	*输入信号: 3',
-                         'vin 3  0 PULSE(0 2 0  \'stime/25\' 0 \'stime/999\' \'stime/10\') ', '  *目标信号: 888',
-                         'vout 888 0 pulse(2 0 0 0 0 \'stime/18\' \'stime/10\')', '*输出信号:999', 'vtemp 4 999 dc 0',
-                         'Rload 999 0 100k', '	*上拉电源:1', 'vcc 1 0 DC 3', '	*下拉电源:2', 'vdd 2 0 DC -3', '',
-                         '*待生成电路'
+                          '.ends', '*embyro', '	*input: 3',
+                         'vin 3  0 PULSE(0 2 0  \'stime/25\' 0 \'stime/999\' \'stime/10\') ', '  *target: 888',
+                         'vout 888 0 pulse(2 0 0 0 0 \'stime/18\' \'stime/10\')', '*output:999', 'vtemp 4 999 dc 0',
+                         'Rload 999 0 100k', '	*vcc:1', 'vcc 1 0 DC 3', '	*vdd:2', 'vdd 2 0 DC -3', '',
+                         '*evolved circuit'
                          ]
 
         instruct_content=[]
@@ -281,23 +280,23 @@ def cal_fitness(spicepath,filename,targetpath,tem_targetpath,circuit_area):
         print("shape[0]<10")
         return -9999, -9999, -9999, -9999
     else:
-        # 输入电压
+
         v_in = arrs[3]
-        # 输出电压
+
         v_out = arrs[4]
-        # 参考电压
+
         v_ref = arrs[5]
-        # 上拉电压
+
         vcc = arrs[1]
-        # 下拉电压
+
         vdd = arrs[2]
-        # 输入电流
+
         i_in = arrs[8]
-        # 上拉电流
+
         i_vcc = arrs[6]
-        # 下拉电流
+
         i_vdd = arrs[7]
-        # 输出电流
+
         i_out = arrs[9]
 
         if len(v_out) != len(ref_v):
@@ -306,17 +305,17 @@ def cal_fitness(spicepath,filename,targetpath,tem_targetpath,circuit_area):
         if np.all(np.all( np.all(abs(v_out) == 0.00))):
             print("v==0")
             return -99999999999999999,  -99999999999999999,  -99999999999999999,  -99999999999999999
-        ###功率计算##########
+
         deta_t = arrs[0][1] - arrs[0][0]
-        # 输入信号功率
+
         pow0 = abs(np.sum(abs(v_in * i_in)) * deta_t)
-        # 上拉电源功率
+
         pow1 = abs(np.sum(abs(vcc * i_vcc)) * deta_t)
-        # 下拉电源功率
+
         pow2 = abs(np.sum(abs(vdd * i_vdd)) * deta_t)
-        # 输入总功率
+
         power_in = abs(pow0 + pow1 + pow2)
-        # 输出总功率
+
 
         power_out = abs(np.sum(abs(v_out * i_out)) * deta_t)
 

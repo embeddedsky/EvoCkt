@@ -231,7 +231,7 @@ class Tree:
                     rand_terminal = self.terminal_set[random_pos2]
                     self.terminal_count_set[random_pos2] += 1
                 self.__temp_terminals.append(rand_terminal)
-        #避免最后一个是单数
+
         self.only_has_one.clear()
         self.only_has_one_pos.clear()
         for i in range(len(self.terminal_set)):
@@ -341,7 +341,7 @@ class Tree:
                 self.update_tree()
 
                 self.__temp_terminals = self.create_terminal()
-                self.current_terminal_node = 0  # 调用terminal_value之前必备
+                self.current_terminal_node = 0
                 self.terminal_value(self.root)
         self.update_tree()
 
@@ -475,7 +475,6 @@ class Tree:
 
 
 
-    #调整高度
     def adjust_depth(self,current_node:Node):
         if current_node.type=='T':
             return
@@ -507,7 +506,7 @@ class Tree:
 
             while True:
                 if q.empty():
-                    print("没有找到")
+                    print("No found")
 
                     break
                 while q.qsize() > 0:
@@ -533,7 +532,7 @@ class Tree:
         # self.update_terminal_count(old_node,'CUT')
         self._replace_node(rnd_num, self.root, node)
         # self.update_terminal_count(node,'ADD')
-    #TERMINAL合法性检查及调整
+
     def check_not_one(self):
         self.terminal_count_set = [0] * len(self.terminal_set)
         self.__temp_terminals.clear()
@@ -569,7 +568,7 @@ class Tree:
         self.__temp_terminals.clear()
         self.update_terminal_count_set(self.root,False)
 
-        #保证存在0,1,2,3,4
+
         # ------------------0-------------------------#
 
         if self.terminal_count_set[0] == 0:
@@ -589,7 +588,7 @@ class Tree:
                 print("")
             rand_index = random.randrange(0, len(not_must_pos))
             self.__temp_terminals[not_must_pos[rand_index]] = 0
-        self.current_terminal_node = 0  # 调用terminal_value之前必备
+        self.current_terminal_node = 0
         self.terminal_value(self.root)
         self.init_port_list(self.root)
         self.left_left(self.root)
@@ -615,7 +614,7 @@ class Tree:
                 print("")
             rand_index=random.randrange(0,len(not_must_pos))
             self.__temp_terminals[not_must_pos[rand_index]]=1
-        self.current_terminal_node = 0  # 调用terminal_value之前必备
+        self.current_terminal_node = 0
         self.terminal_value(self.root)
         self.init_port_list(self.root)
         self.left_left(self.root)
@@ -641,7 +640,7 @@ class Tree:
                 print("")
             rand_index = random.randrange(0, len(not_must_pos))
             self.__temp_terminals[not_must_pos[rand_index]] = 2
-        self.current_terminal_node = 0  # 调用terminal_value之前必备
+        self.current_terminal_node = 0
         self.terminal_value(self.root)
         self.init_port_list(self.root)
         self.left_left(self.root)
@@ -667,7 +666,7 @@ class Tree:
                 print("")
             rand_index = random.randrange(0, len(not_must_pos))
             self.__temp_terminals[not_must_pos[rand_index]] = 3
-        self.current_terminal_node = 0  # 调用terminal_value之前必备
+        self.current_terminal_node = 0
         self.terminal_value(self.root)
         self.init_port_list(self.root)
         self.left_left(self.root)
@@ -693,7 +692,7 @@ class Tree:
                 print("")
             rand_index = random.randrange(0, len(not_must_pos))
             self.__temp_terminals[not_must_pos[rand_index]] = 4
-        self.current_terminal_node = 0  # 调用terminal_value之前必备
+        self.current_terminal_node = 0
         self.terminal_value(self.root)
         self.init_port_list(self.root)
         self.left_left(self.root)
@@ -744,7 +743,7 @@ class Tree:
             self.__temp_terminals[only_one_pos[i]]=temp[i]
 
 
-        self.current_terminal_node = 0  # 调用terminal_value之前必备
+        self.current_terminal_node = 0
         self.terminal_value(self.root)
         self.init_port_list(self.root)
         self.left_left(self.root)
@@ -752,7 +751,7 @@ class Tree:
 
 
 
-    #树高度检查
+
 
     def update_terminal_count_opt(self,parent:Node,operate:None):
         if parent is not None:
@@ -762,7 +761,7 @@ class Tree:
                 elif operate =='ADD':
                     self.terminal_count_set[parent.label]+=1
                 else:
-                    raise Exception('操作呢？？？')
+                    raise Exception('what the operation？')
             else:
                 for i in range(parent.max_num_of_children):
                     self.update_terminal_count_opt(parent.children_list[i])
@@ -909,7 +908,7 @@ class Tree:
                     self.terminal_node_num+=1
                     # self.generate_random_terminal_value()
                     parent_node.children_list[i]= Node(None, 0, "T", 0, None, -1)
-    ####根据terminal_node_num个数，生成随机terminal序列self.__temp_terminals
+
     def create_terminal(self):
         temp_terminals=[]
         self.terminal_node_num=0
@@ -920,7 +919,7 @@ class Tree:
         for i in range(0,self.terminal_node_num):
             random_value=self.terminal_set[random.randrange(1,len(self.terminal_set))]
             temp_terminals.append(random_value)
-        #随机打乱
+
         random.shuffle(temp_terminals)
         return temp_terminals
     def create_terminal2(self):
@@ -940,10 +939,10 @@ class Tree:
             else:
                 random_value=only_one.get()
             temp_terminals.append(random_value)
-        #随机打乱
+
         random.shuffle(temp_terminals)
         return temp_terminals
-    #更新terminal_count_set,_temp_terminal
+
     def update_terminal_count_set(self,parent:Node,CalParent:bool):
         if parent!=None:
             if parent.type=='T':
@@ -958,7 +957,7 @@ class Tree:
                         self.terminal_count_set[port] += 1
             else:
                 return
-    #更新terminal_node_num个数
+
     def update_terminal_node_num(self,parent:Node):
         if parent!=None:
             if parent.type=='T':
@@ -969,7 +968,7 @@ class Tree:
             else:
                 return
 
-    ####terminal_node赋值
+
     def terminal_value(self, parent_node: Node):
         if parent_node !=None:
             if parent_node.max_num_of_children == 0:
@@ -1165,7 +1164,7 @@ class Tree:
                 #     parent_node.value=temp_value
                 for i in range(parent_node.max_num_of_children):
                     self.update_value(parent_node.children_list[i])
-#左孩子的最左，右孩子的最左，端口赋值
+
     def init_port_list(self,parent:Node):
         if parent is not None:
             if parent.type=='T':

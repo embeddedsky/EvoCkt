@@ -85,7 +85,7 @@ class GP:
                 temp_tree = Tree(rand_depth, self.function_set, self.R_Set,self.C_Set,self.Not_Set,self.unitoff1_set,self.unitoff2_set,self.uniton1_set,self.uniton2_set,self.M_Set,self.P_Set,self.N_Set,self.root_function_set,self.terminal_set,None,self.max_depth,self.sub_tree_set)
                 temp_tree.populate_random_tree("grow")
                 #temp_tree.adjust_depth_terminal()
-                print("初始化-第",i,"个树：")
+                print("initial",i,"th tree：")
                 temp_tree.print_tree()
                 self.population.append(temp_tree)
         else:

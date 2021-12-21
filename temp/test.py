@@ -65,7 +65,7 @@ def find_best_value(tree:Tree):
                 if fitness > current_fitness:
                     current_fitness = fitness
                     best_value = value
-                    print("值局部优化：", current_fitness)
+                    print("value optimization：", current_fitness)
                     fitness_record[0].append(fitness)
                     fitness_record[1].append(error_a)
                     fitness_record[2].append(error_b)
@@ -76,11 +76,11 @@ def find_best_value(tree:Tree):
             node.value = best_value
 
 
-#fitness记录文件
+
 fit_file=open(fitness_file,"w+")
 fit_file.truncate()
 
-#文件清空
+
 for i in range(0,pop_size):
     filename1=filename+str(i)+'.cir'
     filename2=targetpath+str(i)+'.raw'
@@ -103,8 +103,7 @@ if __name__ == '__main__':
         fitness_record=[[],[],[],[]]
 
 
-        #确定结构
-        # 计算适应度
+
         max_fitness =  -99999999999999999
         best_error_a = -99999999999999999
         best_error_b =  -99999999999999999
@@ -134,7 +133,7 @@ if __name__ == '__main__':
 
             fit_file.writelines(str(max_fitness)+" "+str(best_error_a)+" "+str(best_error_b)+" "+str(best_error_c)+"\n")
             fit_file.flush()
-            #判断是否达到终止条件
+
             best_fitness = float("-inf")
             best_tree = gp.population[0]
             for tree in gp.population:
@@ -153,10 +152,10 @@ if __name__ == '__main__':
                 instruction_set = create_instruction(best_tree)
                 print_file(best_path, instruction_set,0)
                 break
-            #继续下一次迭代
+
             print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
             print("No.", iterate, "iterate")
-            #进化
+
             gp.evolve(iterate)
             iterate += 1
             print("best fitness:",max_fitness)
@@ -168,30 +167,5 @@ if __name__ == '__main__':
         #
         # fit_file.writelines("\n")
 
-        pyplot.figure(1)
-        pyplot.title("fitness")
-        pyplot.plot(fitness_record[0],marker=marker[zhixing],label=str(zhixing)+"-th simulation")
-        pyplot.xlabel("Generations")
-        pyplot.legend(loc="upper right")
-
-        pyplot.figure(2)
-        pyplot.title("Nomalized error voltage")
-        pyplot.plot(fitness_record[1],marker=marker[zhixing],label=str(zhixing)+"-th simulation nomalized error voltage")
-        pyplot.xlabel("Generations")
-        pyplot.legend(loc="upper right")
-
-        pyplot.figure(3)
-        pyplot.title("Power consumption")
-        pyplot.plot(fitness_record[2],marker=marker[zhixing],label=str(zhixing)+"-th simulation power consumption")
-        pyplot.xlabel("Generations")
-        pyplot.legend(loc="upper right")
-
-        pyplot.figure(4)
-        pyplot.title("Area")
-        pyplot.plot(fitness_record[3],marker=marker[zhixing],label=str(zhixing)+"-th simulation area")
-        pyplot.xlabel("Generations")
-        pyplot.legend(loc="upper right")
-
-        pyplot.show()
 
     fit_file.close()

@@ -49,7 +49,7 @@ Not_Set=[("Not",2,Not_Gate),("Not_p",2,Not_Gate)]
 C_Set=[("C",2,C_range),("C_P",2,C_range)]
 
 
-#单个mos类型
+
 P_Set=[("P_2_1",3,PMOS),("P_2_2",3,PMOS),("P_2_3",3,PMOS),("P_2_4",3,PMOS),("P_2_5",3,PMOS),("P_2_6",3,PMOS)]
 N_Set=[("N_2_1",3,NMOS),("N_2_2",3,NMOS),("N_2_3",3,NMOS),("N_2_4",3,NMOS),("N_2_5",3,NMOS),("N_2_6",3,NMOS)]
 
@@ -72,7 +72,7 @@ mutation_methods = ["delete","add","another","change_value"]
 tournament_size =int(0.2*pop_size)
 value_cross_rate=0.2
 
-#CPU核
+
 core=1
 
 elitism = True
@@ -209,7 +209,7 @@ def print_file(filename,instruction_set,index):
         fixed_content = ['guess generator', '',
                          '.MODEL NMOS_VAR_CH_W NMOS L=1.000E-05 W=1.000E-05',
                          '.MODEL PMOS_VAR_CH_W PMOS L=1.000E-05 W=1.000E-05', '',
-                         '*胚胎电路', '*****input***********', 'vc 1001 0 dc 2.5', 'rc 1001 2 1',
+                         '*embyro', '*****input***********', 'vc 1001 0 dc 2.5', 'rc 1001 2 1',
                          '*********voltage p***************', 'vp 3 0 dc 5',
                          '********output**********************', 'vl 4 0 dc 2.5',
                          '*******generate circuit*****************']

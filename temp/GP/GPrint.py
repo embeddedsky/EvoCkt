@@ -10,7 +10,7 @@ import pandas
 import numpy as np
 #并行计算所需库
 from multiprocessing.dummy import Pool as ThreadPool
-#各文件路径
+
 spicepath = r'/rds/bear-apps/2019b/EL7-haswell/software/ngspice/31-foss-2019b/bin/ngspice'    #location of ngspice terminal on computer
 tem_targetpath='none'
 filename='circuit'
@@ -22,7 +22,7 @@ ref_path='vout-t.xlsx'
 excel_file=pandas.read_excel(ref_path,sheet_name=[0])
 ref_matrix=excel_file[0].values.transpose()
 ref_v=ref_matrix[1]
-#程序参数
+
 depth_range = (4,7)
 max_depth=depth_range[1]
 port_num=30
@@ -50,30 +50,26 @@ Not_Set=[("Not",2,Not_Gate),("Not_p",2,Not_Gate)]
 C_Set=[("C",2,C_range),("C_P",2,C_range)]
 
 
-#单个mos类型
+
 P_Set=[("P_2_1",3,PMOS),("P_2_2",3,PMOS),("P_2_3",3,PMOS),("P_2_4",3,PMOS),("P_2_5",3,PMOS),("P_2_6",3,PMOS)]
 N_Set=[("N_2_1",3,NMOS),("N_2_2",3,NMOS),("N_2_3",3,NMOS),("N_2_4",3,NMOS),("N_2_5",3,NMOS),("N_2_6",3,NMOS)]
 
 M_Set=[("Mem", 2,MEMRISTOR),("Mem_P", 2,MEMRISTOR)]
-# 0:接地
-#1：VSS
-#2:-VSS
-#3:INPUT
-#4:OUPUT
+
 terminal_set = [None]*port_num
 for i in range(port_num):
   terminal_set[i]=i
 
-cross_rate =0.8#交叉率
+cross_rate =0.8
 pop_init_method = "grow"
 pop_size = 100
-mutation_rate =0.2#变异率
+mutation_rate =0.2
 
 mutation_methods = ["delete","add","another","change_value"]
 tournament_size =int(0.2*pop_size)
 value_cross_rate=0.2
 
-#CPU核
+
 core=1
 
 elitism = True
@@ -82,7 +78,7 @@ found_solution = False
 file_name_add=[]
 for i in range(0,pop_size):
     file_name_add.append(i)
-#根据属性结构，输出指令矩阵
+
 class Instruc:
     def __init__(self,label=None,port_num=0,port_list=[],other=[],value=[],index=0):
         self.label=label
@@ -99,9 +95,9 @@ def create_instruction(population:Tree):
     return Instruc_Set
 def create_instruction_recursively(parent:Node,Instruct_Set:list,function_dic:dict):
     if parent is not None:
-        #此处替换为器件名称
+
         if parent.type=='F':
-            ins = Instruc(None,0,[],[],[])#奇怪的问题，如果不初始化值，会叠加，奇怪啊奇怪
+            ins = Instruc(None,0,[],[],[])
             if parent.label=='R':
                 ins.label = 'R'
             elif parent.label=='C' or parent.label=='C_P':
@@ -219,7 +215,7 @@ def print_file(filename,instruction_set,index):
                 temp_str += instruction_set[j].other[k] + " "
             instruct_content.append(temp_str)
         other_content = ['.save time', '.save v(3)',
-                         '*控制输出', '.control',
+                         '*control output', '.control',
                          'run', 'op', 'dc vdd 2 3 0.1','dc temp 0 100 5',
                          'write rawfile' + str(index) + '.raw', '.endc', '',
                          '.end']
