@@ -50,16 +50,12 @@ Not_Set=[("Not",2,Not_Gate),("Not_p",2,Not_Gate)]
 C_Set=[("C",2,C_range),("C_P",2,C_range)]
 
 
-#单个mos类型
+
 P_Set=[("P_2_1",3,PMOS),("P_2_2",3,PMOS),("P_2_3",3,PMOS),("P_2_4",3,PMOS),("P_2_5",3,PMOS),("P_2_6",3,PMOS)]
 N_Set=[("N_2_1",3,NMOS),("N_2_2",3,NMOS),("N_2_3",3,NMOS),("N_2_4",3,NMOS),("N_2_5",3,NMOS),("N_2_6",3,NMOS)]
 
 M_Set=[("Mem", 2,MEMRISTOR),("Mem_P", 2,MEMRISTOR)]
-# 0:接地
-#1：VSS
-#2:-VSS
-#3:INPUT
-#4:OUPUT
+
 terminal_set = [None]*port_num
 for i in range(port_num):
   terminal_set[i]=i
@@ -269,7 +265,7 @@ def cal_fitness(spicepath,filename,targetpath,tem_targetpath,circuit_area,index)
         deta_t = 1/ len(i_out)
 
         power_in = abs(np.sum(abs(v_in * i_in)) * deta_t)
- 
+
         power_out = abs(np.sum(abs(v_out * i_out)) * deta_t)
 
 
