@@ -39,7 +39,7 @@ def find_best_value(tree:Tree):
                 if fitness>current_fitness:
                     current_fitness=fitness
                     best_value=value
-                    print("值局部优化：", current_fitness)
+                    print("local optimize：", current_fitness)
                     fitness_record[0].append(fitness)
                     fitness_record[1].append(error_a)
                     fitness_record[2].append(error_b)
@@ -76,7 +76,7 @@ def find_best_value(tree:Tree):
             node.value = best_value
 
 
-#fitness记录文件
+#fitness record
 fit_file=open(fitness_file,"w+")
 fit_file.truncate()
 
@@ -153,7 +153,7 @@ if __name__ == '__main__':
                 instruction_set = create_instruction(best_tree)
                 print_file(best_path, instruction_set,0)
                 break
-            #继续下一次迭代
+            #next iterate
             print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
             print("No.", iterate, "iterate")
             #进化
@@ -168,30 +168,5 @@ if __name__ == '__main__':
         #
         # fit_file.writelines("\n")
 
-        pyplot.figure(1)
-        pyplot.title("fitness")
-        pyplot.plot(fitness_record[0],marker=marker[zhixing],label=str(zhixing)+"-th simulation")
-        pyplot.xlabel("Generations")
-        pyplot.legend(loc="upper right")
-
-        pyplot.figure(2)
-        pyplot.title("Nomalized error voltage")
-        pyplot.plot(fitness_record[1],marker=marker[zhixing],label=str(zhixing)+"-th simulation nomalized error voltage")
-        pyplot.xlabel("Generations")
-        pyplot.legend(loc="upper right")
-
-        pyplot.figure(3)
-        pyplot.title("Power consumption")
-        pyplot.plot(fitness_record[2],marker=marker[zhixing],label=str(zhixing)+"-th simulation power consumption")
-        pyplot.xlabel("Generations")
-        pyplot.legend(loc="upper right")
-
-        pyplot.figure(4)
-        pyplot.title("Area")
-        pyplot.plot(fitness_record[3],marker=marker[zhixing],label=str(zhixing)+"-th simulation area")
-        pyplot.xlabel("Generations")
-        pyplot.legend(loc="upper right")
-
-        pyplot.show()
 
     fit_file.close()
