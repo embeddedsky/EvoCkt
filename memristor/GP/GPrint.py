@@ -8,7 +8,7 @@ from GP.Utilities.raw_read import rawread
 import subprocess as sp
 import pandas
 import numpy as np
-#并行计算所需库
+
 from multiprocessing.dummy import Pool as ThreadPool
 
 spicepath = r'/rds/bear-apps/2019b/EL7-haswell/software/ngspice/31-foss-2019b/bin/ngspice'   #location of ngspice terminal on computer
