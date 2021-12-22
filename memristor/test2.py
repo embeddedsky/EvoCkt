@@ -76,7 +76,7 @@ def find_best_value(tree:Tree):
             node.value = best_value
 
 
-#fitness记录文件
+
 fit_file=open(fitness_file,"w+")
 fit_file.truncate()
 

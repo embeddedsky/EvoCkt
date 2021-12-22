@@ -65,7 +65,7 @@ def find_best_value(tree:Tree):
                 if fitness > current_fitness:
                     current_fitness = fitness
                     best_value = value
-                    print("值局部优化：", current_fitness)
+                    print("value local optimization：", current_fitness)
                     fitness_record[0].append(fitness)
                     fitness_record[1].append(error_a)
                     fitness_record[2].append(error_b)
@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
             fit_file.writelines(str(max_fitness)+" "+str(best_error_a)+" "+str(best_error_b)+" "+str(best_error_c)+"\n")
             fit_file.flush()
-            #判断是否达到终止条件
+
             best_fitness = float("-inf")
             best_tree = gp.population[0]
             for tree in gp.population:
@@ -156,7 +156,7 @@ if __name__ == '__main__':
             #next iterate
             print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
             print("No.", iterate, "iterate")
-            #进化
+
             gp.evolve(iterate)
             iterate += 1
             print("best fitness:",max_fitness)

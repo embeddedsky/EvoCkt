@@ -127,7 +127,7 @@ class Tree:
             if value_a>rand_label[2][1][1]:
                 value_a=rand_label[2][1][1]
             if value_a<value_b:
-                raise Exception("valuea要大于valueb")
+                raise Exception("valuea larger than valueb")
             temp_value:tuple=(value_a,value_b,rand_label[2][2])
             return Node(None, rand_label[1], "F", rand_label[0], temp_value, -1)
         else:
@@ -195,7 +195,7 @@ class Tree:
             if value_a>rand_label[2][1][1]:
                 value_a=rand_label[2][1][1]
             if value_a<value_b:
-                raise Exception("valuea要大于valueb")
+                raise Exception("valuea larger than valueb")
             temp_value:tuple=(value_a,value_b,rand_label[2][2])
             return Node(None, rand_label[1], "F", rand_label[0], temp_value, -1)
         else:
@@ -311,7 +311,7 @@ class Tree:
                     self.__populate_grow_tree(self.root, 1)
                     self.update_tree()
                 self.__temp_terminals=self.create_terminal()
-                self.current_terminal_node=0#调用terminal_value之前必备
+                self.current_terminal_node=0
                 self.terminal_value(self.root)
                 #self.left_left(self.root)
         # update information of the tree
@@ -897,7 +897,7 @@ class Tree:
             for i in range(parent_node.max_num_of_children):
                 self.terminal_node_num += 1
                 # self.generate_random_terminal_value()
-                parent_node.children_list[i] = Node(None, 0, "T", 0, None, -1)#默认接地
+                parent_node.children_list[i] = Node(None, 0, "T", 0, None, -1)
         else:
             for i in range(parent_node.max_num_of_children):
                 # add a function

@@ -39,7 +39,7 @@ def find_best_value(tree:Tree):
                 if fitness>current_fitness:
                     current_fitness=fitness
                     best_value=value
-                    print("值局部优化：", current_fitness)
+                    print("value local optimization：", current_fitness)
                     fitness_record[0].append(fitness)
                     fitness_record[1].append(error_a)
                     fitness_record[2].append(error_b)
@@ -65,7 +65,7 @@ def find_best_value(tree:Tree):
                 if fitness > current_fitness:
                     current_fitness = fitness
                     best_value = value
-                    print("value optimization：", current_fitness)
+                    print("value local optimization：", current_fitness)
                     fitness_record[0].append(fitness)
                     fitness_record[1].append(error_a)
                     fitness_record[2].append(error_b)

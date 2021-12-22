@@ -507,7 +507,7 @@ class Tree:
 
             while True:
                 if q.empty():
-                    print("没有找到")
+                    print("no found")
 
                     break
                 while q.qsize() > 0:
@@ -533,7 +533,7 @@ class Tree:
         # self.update_terminal_count(old_node,'CUT')
         self._replace_node(rnd_num, self.root, node)
         # self.update_terminal_count(node,'ADD')
-    #TERMINAL合法性检查及调整
+
     def check_not_one(self):
         self.terminal_count_set = [0] * len(self.terminal_set)
         self.__temp_terminals.clear()
